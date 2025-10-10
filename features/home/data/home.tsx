@@ -232,3 +232,19 @@ export const incomeCategories = [
     ),
   },
 ];
+
+export type CategoryOption = {
+  title: string;
+  value: string;
+  icon: (p: IconProps) => React.ReactNode;
+};
+
+export const incomeCategoryMap: Record<string, CategoryOption> =
+  Object.fromEntries(
+    (incomeCategories as CategoryOption[]).map((c) => [c.value, c])
+  );
+
+export const expenseCategoryMap: Record<string, CategoryOption> =
+  Object.fromEntries(
+    (expenseCategories as CategoryOption[]).map((c) => [c.value, c])
+  );

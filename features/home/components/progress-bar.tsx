@@ -1,10 +1,7 @@
-import { formatRupiah } from "@/lib/utils";
 import { Text, View } from "react-native";
 
 export function ProgressBar({
   progress,
-  totalIncome,
-  totalExpense,
 }: {
   progress: number;
   totalIncome: number;
@@ -18,9 +15,7 @@ export function ProgressBar({
         </Text>
       </View>
       <View className="bg-[#F00] h-full flex-1 items-center justify-center">
-        <Text className="text-primary-400">
-          {formatRupiah(totalIncome - totalExpense)}
-        </Text>
+        <Text className="text-primary-400"> {Math.round(100 - progress)}%</Text>
       </View>
     </View>
   );

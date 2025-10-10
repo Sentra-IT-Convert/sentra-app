@@ -1,45 +1,49 @@
-import React from "react";
-import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    Text,
-    useWindowDimensions,
-    View,
-} from "react-native";
-
 import LoginForm from "@/features/auth/components/forms/login-form";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { Image, ScrollView, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function Login() {
-  const { height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView className="bg-primary-600 flex-1 items-center justify-center w-full h-full">
-      <View className="bg-white border-2 rounded-t-3xl rounded-lg w-full h-full mt-6">
-        <ScrollView
-          className="p-6 flex-grow"
-          contentContainerStyle={{ paddingBottom: 80 }}
-        >
-          <View className="flex flex-col items-start justify-start w-full">
-            <Text className="font-bold text-primary-400 text-2xl">
-              Selamat datang kembali!
-            </Text>
-            <Text className="text-sm">
-              Halo, mari log in untuk masuk ke aplikasi
-            </Text>
-          </View>
+    <SafeAreaView className="flex-1 bg-[#00027d]" edges={["top", "bottom"]}>
+      <StatusBar style="light" backgroundColor="#0b0f6b" translucent={false} />
 
-          <View
-            className="flex items-center justify-center"
-            style={{ marginTop: height > 600 ? 40 : 10 }}
+      <View className="flex-1">
+        <View
+          className="flex-1 bg-white rounded-t-3xl"
+          style={{ paddingBottom: Math.max(insets.bottom, 16) }}
+        >
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{
+              paddingTop: 12,
+              paddingBottom: Math.max(insets.bottom, 24),
+            }}
+            className="px-6"
           >
-            <Image
-              source={require("@/assets/images/key.png")}
-              className="mt-2"
-            />
-          </View>
-          <LoginForm />
-        </ScrollView>
+            <View className="w-full">
+              <Text className="text-2xl font-bold text-[#00027d]">
+                Selamat datang kembali!
+              </Text>
+              <Text className="text-sm">
+                Halo, mari log in untuk masuk ke aplikasi
+              </Text>
+            </View>
+
+            <View className="items-center mt-3 mb-4">
+              <Image source={require("@/assets/images/key.png")} />
+            </View>
+
+            <LoginForm />
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );

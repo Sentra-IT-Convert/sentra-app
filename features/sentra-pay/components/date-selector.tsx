@@ -47,23 +47,23 @@ export function DateSelector({ selectedFilter }: { selectedFilter: string }) {
     setCustomDatePickerVisible(true);
   };
 
-//   const handleCustomDateChange = (event: DateTimePickerEvent, date?: Date) => {
-//     setCustomDatePickerVisible(false);
-//     if (date) {
-//       if (selectedDateType === "start") {
-//         setStartDate(date);
-//       } else {
-//         setEndDate(date);
-//       }
-//     }
-//   };
+  //   const handleCustomDateChange = (event: DateTimePickerEvent, date?: Date) => {
+  //     setCustomDatePickerVisible(false);
+  //     if (date) {
+  //       if (selectedDateType === "start") {
+  //         setStartDate(date);
+  //       } else {
+  //         setEndDate(date);
+  //       }
+  //     }
+  //   };
 
   return (
     <View className="flex-row items-center justify-between rounded-lg">
       <>
         <View className="flex-row items-center gap-x-2 flex-1">
           <TouchableOpacity onPress={handlePreviousPeriod}>
-            <AntDesign name="caretleft" size={16} color="white" />
+            <AntDesign name="caret-left" size={16} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -92,7 +92,7 @@ export function DateSelector({ selectedFilter }: { selectedFilter: string }) {
           )} */}
 
           <TouchableOpacity onPress={handleNextPeriod}>
-            <AntDesign name="caretright" size={16} color="white" />
+            <AntDesign name="caret-right" size={16} color="white" />
           </TouchableOpacity>
         </View>
       </>

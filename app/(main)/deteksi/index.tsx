@@ -1,13 +1,8 @@
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import {
-    Image,
-    SafeAreaView,
-    Text,
-    TouchableOpacity,
-    View
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {};
 
@@ -19,7 +14,7 @@ const Deteksi = (props: Props) => {
 
   return (
     <SafeAreaView className="flex-1 bg-primary-400">
-      <View className="items-center justify-center mt-12 py-2">
+      <View className="items-center justify-center mt-2 py-2">
         <Text className="text-white text-lg font-bold">
           Selamat Datang di Sentra Detection
         </Text>

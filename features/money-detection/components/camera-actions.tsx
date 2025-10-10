@@ -12,18 +12,16 @@ export default function CameraActions({
   onTakePicture,
 }: Props) {
   return (
-    <View className="absolute flex-row bottom-[76px] gap-x-8 w-full px-4">
+    <View className="flex-row gap-x-3 w-full">
       <TouchableOpacity
-        className="bg-primary-400 p-5 flex-1 rounded-md self-center mb-4"
+        className="bg-primary-400 p-5 flex-1 rounded-md"
         onPress={onOpenSettings}
       >
         <Text className="text-white font-bold text-center">PENGATURAN</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        className={`${
-          isPending ? "bg-gray-400 opacity-70" : "bg-primary-400"
-        } p-5 flex-1 rounded-md self-center mb-4`}
+        className={`${isPending ? "bg-gray-400 opacity-70" : "bg-primary-400"} p-5 flex-1 rounded-md`}
         onPress={onTakePicture}
         disabled={isPending}
       >

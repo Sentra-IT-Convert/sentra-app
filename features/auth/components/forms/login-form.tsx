@@ -70,6 +70,7 @@ export default function LoginForm() {
               } flex-1 rounded-2xl mt-4 pl-5`}
               placeholder="Mobile Number"
               keyboardType="phone-pad"
+              returnKeyType="done"
               onChangeText={onChange}
               value={value}
             />

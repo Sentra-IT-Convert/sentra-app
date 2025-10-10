@@ -21,10 +21,17 @@ export function Header() {
 
   return (
     <View className="flex-row justify-between items-center">
-      <View>
-        <Text className="text-white text-lg font-bold">Hi, Selamat Datang</Text>
-        <Text className="text-white text-xl font-normal">
-          {user?.name || "Richard"}
+      <View className="gap-y-1">
+        <Text className="text-white text-lg font-bold leading-normal">
+          Halo, {user?.name || "Richard"}
+        </Text>
+        <Text className="text-white text-base font-normal">
+          {new Intl.DateTimeFormat("id-ID", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }).format(new Date())}
         </Text>
       </View>
       <TouchableOpacity

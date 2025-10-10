@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 
 export default function DeteksiLayout() {
   return (
@@ -8,6 +9,16 @@ export default function DeteksiLayout() {
         headerTintColor: "#fff",
         headerTitleStyle: { fontWeight: "bold" },
         headerTitleAlign: "center",
+
+        presentation: "card",
+        animation: Platform.select({
+          ios: "slide_from_right",
+          android: "slide_from_right",
+          default: "slide_from_right",
+        }),
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        statusBarStyle: "light",
       }}
     >
       <Stack.Screen
@@ -16,7 +27,11 @@ export default function DeteksiLayout() {
       />
       <Stack.Screen
         name="money-detection"
-        options={{ headerShown: true, title: "Deteksi Uang Rupiah" }}
+        options={{
+          headerShown: true,
+          title: "Deteksi Uang Rupiah",
+          presentation: "card",
+        }}
       />
     </Stack>
   );

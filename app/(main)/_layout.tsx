@@ -9,13 +9,14 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs, useRouter } from "expo-router";
 import React, { ReactNode } from "react";
 import {
-    GestureResponderEvent,
-    Image,
-    Platform,
-    StyleSheet,
-    TouchableOpacity,
-    View
+  GestureResponderEvent,
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface CenterTabButtonProps {
   children: ReactNode;
@@ -42,6 +43,7 @@ const CenterTabButton: React.FC<CenterTabButtonProps> = ({
 );
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
@@ -53,7 +55,8 @@ export default function TabLayout() {
           ios: {},
           default: {
             position: "absolute",
-            height: 60,
+            height: 60 + insets.bottom,
+            paddingBottom: insets.bottom,
             borderTopWidth: 0,
             backgroundColor: "white",
             elevation: 3,
@@ -70,6 +73,7 @@ export default function TabLayout() {
           fontSize: 12,
           fontWeight: "normal",
         },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen

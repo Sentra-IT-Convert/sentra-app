@@ -3,20 +3,25 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Linking from "expo-linking";
 import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 type Props = {};
 
 const VerificationFace = (props: Props) => {
+  const insets = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDeepLink = useCallback((event: { url: string }) => {
@@ -57,10 +62,18 @@ const VerificationFace = (props: Props) => {
 
   return (
     <SafeAreaView className="bg-primary-600 flex-1 items-center justify-center w-full h-full">
-      <View className="bg-white border-2 rounded-t-3xl rounded-lg w-full h-full mt-6 space-y-4">
+      <StatusBar style="light" backgroundColor="#0b0f6b" translucent={false} />
+      <View
+        style={{ paddingBottom: Math.max(insets.bottom, 16) }}
+        className="bg-white border rounded-t-3xl rounded-lg w-full h-full space-y-4"
+      >
         <ScrollView
           className="p-6 flex-grow flex-col"
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+          contentInsetAdjustmentBehavior="automatic"
+          contentContainerStyle={{
+            paddingTop: 12,
+            paddingBottom: Math.max(insets.bottom, 24),
+          }}
         >
           <View className="flex flex-row items-center justify-between w-full">
             <Text className="font-bold text-primary-400 text-2xl flex-1">

@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 
 export default function SentraPayLayout() {
   return (
@@ -9,15 +10,35 @@ export default function SentraPayLayout() {
         headerTintColor: "#fff",
         headerTitleStyle: { fontWeight: "bold" },
         headerTitleAlign: "center",
+        presentation: "card",
+        animation: Platform.select({
+          ios: "slide_from_right",
+          android: "slide_from_right",
+          default: "slide_from_right",
+        }),
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
       }}
     >
       <Stack.Screen
         name="sentra-pay"
-        options={{ headerShown: false, title: "Sentra Pay" }}
+        options={{
+          headerShown: false,
+          title: "Sentra Pay",
+          presentation: "card",
+          animation:
+            Platform.OS === "ios" ? "slide_from_right" : "slide_from_right",
+        }}
       />
       <Stack.Screen
         name="notification"
-        options={{ headerShown: true, title: "Notifikasi" }}
+        options={{
+          headerShown: true,
+          title: "Notifikasi",
+          presentation: "card",
+          animation:
+            Platform.OS === "ios" ? "slide_from_right" : "slide_from_right",
+        }}
       />
     </Stack>
   );

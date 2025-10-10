@@ -1,11 +1,7 @@
-import { TABS } from "@/features/home/data/home";
-import { useState } from "react";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from "react-native-reanimated";
+
+const TABS = ["Harian", "Mingguan", "Bulanan"];
 
 export function FiltersTab({
   selected,
@@ -14,41 +10,45 @@ export function FiltersTab({
   selected: string;
   setSelected: (item: string) => void;
 }) {
-  const translateX = useSharedValue<number>(0);
-  const [tabWidth, setTabWidth] = useState<number>(0);
-
-  const handlePress = (index: number, item: string) => {
-    setSelected(item);
-    translateX.value = withTiming(index * tabWidth, { duration: 300 });
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
-
   return (
-    <View
-      className="flex-row justify-between items-center py-2 bg-primary-200 rounded-2xl space-x-2"
-      onLayout={(event) => {
-        setTabWidth(event.nativeEvent.layout.width / TABS.length);
-      }}
-    >
-      <Animated.View
-        style={[animatedStyle, { width: tabWidth }]}
-        className="absolute h-full bg-primary-400 rounded-2xl"
-      />
+    <View className="flex-row gap-3 w-full">
+      {TABS.map((item) => {
+        const active = selected === item;
 
-      {TABS.map((item, index) => (
-        <TouchableOpacity
-          key={item}
-          className="flex-1 items-center p-4"
-          onPress={() => handlePress(index, item)}
-        >
-          <Text className={selected === item ? "text-white" : "text-gray-700"}>
-            {item}
-          </Text>
-        </TouchableOpacity>
-      ))}
+        return (
+          <TouchableOpacity
+            key={item}
+            onPress={() => setSelected(item)}
+            activeOpacity={0.85}
+            className={[
+              "flex-1 rounded-xl border px-4 py-3 items-center justify-center",
+              active
+                ? "bg-primary-600 border-none"
+                : "bg-white/90 border-primary-200 border-2",
+            ].join(" ")}
+            style={
+              active
+                ? {
+                    shadowOpacity: 0.2,
+                    shadowRadius: 6,
+                    shadowOffset: { width: 0, height: 2 },
+                    elevation: 4,
+                  }
+                : undefined
+            }
+          >
+            <Text
+              className={[
+                "font-semibold",
+                active ? "text-white" : "font-bold text-[#6063c3]",
+              ].join(" ")}
+              numberOfLines={1}
+            >
+              {item}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }

@@ -2,16 +2,15 @@ import CameraPermission from "@/components/permission";
 import CameraActions from "@/features/money-detection/components/camera-actions";
 import SettingsModal from "@/features/money-detection/components/settings-modal";
 import { useDeteksi } from "@/features/money-detection/hooks/use-money-detection";
+import { DeteksiResponse } from "@/features/money-detection/types/money-detection";
 import {
-    DeteksiResponse
-} from "@/features/money-detection/types/money-detection";
-import {
-    speakDetectionResults,
-    speakMessage,
+  speakDetectionResults,
+  speakMessage,
 } from "@/features/money-detection/utils/speech";
 import { CameraType, CameraView } from "expo-camera";
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const MoneyDetection = () => {
   const [detectedAmount, setDetectedAmount] = useState<number | null>(null);
@@ -19,7 +18,7 @@ const MoneyDetection = () => {
   const [beepEnabled, setBeepEnabled] = useState<boolean>(true);
   const [flashEnabled, setFlashEnabled] = useState<boolean>(true);
   const [facing, setFacing] = useState<CameraType>("back");
-
+  const insets = useSafeAreaInsets();
   const cameraRef = useRef<CameraView>(null);
 
   const handleDetectionResults = (res: DeteksiResponse) => {
@@ -93,7 +92,10 @@ const MoneyDetection = () => {
         </CameraView>
       </View>
 
-      <View className="flex-[1] bg-white pt-10">
+      <View
+        style={{ paddingBottom: insets.bottom + 10 }}
+        className="absolute left-0 right-0 bottom-0 bg-white pt-6 px-4 h-[200px]"
+      >
         <CameraActions
           isPending={isPending}
           onOpenSettings={() => setModalVisible(true)}

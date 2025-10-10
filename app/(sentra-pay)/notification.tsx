@@ -1,12 +1,11 @@
+import { StatusBar } from "expo-status-bar";
 import { Info } from "lucide-react-native";
 import React, { useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
-    SafeAreaView,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 type Props = {};
 
@@ -110,6 +109,7 @@ export const notifications: Notification[] = [
 ];
 
 const Notification = (props: Props) => {
+  const insets = useSafeAreaInsets();
   const [readNotifications, setReadNotifications] = useState<string[]>(
     notifications.filter((n) => n.isRead).map((n) => n.id)
   );
@@ -121,8 +121,15 @@ const Notification = (props: Props) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+      <StatusBar style="light" backgroundColor="#0b0f6b" translucent={false} />
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{
+          paddingTop: 12,
+          paddingBottom: Math.max(insets.bottom, 24),
+        }}
+      >
         {notifications.map((notification) => (
           <TouchableOpacity
             key={notification.id}

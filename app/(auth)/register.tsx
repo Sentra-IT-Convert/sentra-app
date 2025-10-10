@@ -1,21 +1,20 @@
 import React from "react";
-import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    Text,
-    useWindowDimensions,
-    View,
-} from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 
 import RegisterForm from "@/features/auth/components/forms/register-form";
+import { StatusBar } from "expo-status-bar";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function Register() {
-  const { height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView className="bg-primary-600 flex-1 items-center justify-center w-full h-full">
-      <View className="bg-white border-2 rounded-t-3xl rounded-lg w-full h-full mt-6 mx-auto">
+    <SafeAreaView className="flex-1 bg-[#00027d]" edges={["bottom"]}>
+      <StatusBar style="light" backgroundColor="#0b0f6b" translucent={false} />
+      <View className="bg-white border-2 rounded-t-3xl rounded-lg w-full h-full mx-auto">
         <ScrollView
           className="p-6 flex-grow"
           contentContainerStyle={{
@@ -29,12 +28,7 @@ export default function Register() {
             </Text>
             <Text>Halo, mari buat akun baru!</Text>
           </View>
-          <View
-            className="flex items-center justify-center"
-            style={{
-              marginTop: height > 600 ? 40 : 10,
-            }}
-          >
+          <View className="flex items-center justify-center">
             <Image
               source={require("@/assets/images/Illustration.png")}
               className="mt-2"

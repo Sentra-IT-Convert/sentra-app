@@ -7,21 +7,21 @@ import { useWallet } from "@/features/sentra-pay/hooks/use-wallet";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
-    ArrowLeft,
-    ArrowUp,
-    DollarSign,
-    Eye,
-    EyeOff,
-    Plus,
-    Smartphone,
+  ArrowLeft,
+  ArrowUp,
+  DollarSign,
+  Eye,
+  EyeOff,
+  Plus,
+  Smartphone,
 } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-    SafeAreaView,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 type Props = {};
@@ -98,38 +98,39 @@ const SentraPay = (props: Props) => {
         </View>
 
         <View className="px-4 mt-2">
-          <View className="flex-row items-center justify-center">
-            <Text className="text-white text-base mr-1">Total Saldo</Text>
-            <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
-              {showBalance ? (
-                <Eye stroke="white" width={20} height={20} />
-              ) : (
-                <EyeOff stroke="white" width={20} height={20} />
-              )}
-            </TouchableOpacity>
-          </View>
+          <View className="border rounded-xl p-4 border-white/40">
+            <View className="flex-row items-center justify-center">
+              <Text className="text-white text-base mr-1">Total Saldo</Text>
+              <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
+                {showBalance ? (
+                  <Eye stroke="white" width={20} height={20} />
+                ) : (
+                  <EyeOff stroke="white" width={20} height={20} />
+                )}
+              </TouchableOpacity>
+            </View>
 
-          <Text className="text-white text-center text-3xl font-bold mt-1">
-            Rp {showBalance ? `${data?.balance}` : "••••••••"}
-          </Text>
+            <Text className="text-white text-center text-3xl font-bold mt-1">
+              Rp{showBalance ? `${data?.balance}` : "••••••••"}
+            </Text>
 
-          <View className="flex-row items-center justify-center mt-2 mb-4">
-            <TransactionSummary
-              totalIncome={totalIncome}
-              totalExpense={totalExpense}
-            />
-          </View>
+            <View className="flex-row items-center justify-center mt-2 mb-4">
+              <TransactionSummary
+                totalIncome={totalIncome}
+                totalExpense={totalExpense}
+              />
+            </View>
+            <View>
+              <ProgressBar
+                totalIncome={totalIncome}
+                totalExpense={totalExpense}
+                progress={progress}
+              />
+            </View>
 
-          <View>
-            <ProgressBar
-              totalIncome={totalIncome}
-              totalExpense={totalExpense}
-              progress={progress}
-            />
-          </View>
-
-          <View className="mb-2">
-            <DateSelector selectedFilter={selected} />
+            <View className="mb-2">
+              <DateSelector selectedFilter={selected} />
+            </View>
           </View>
         </View>
       </View>

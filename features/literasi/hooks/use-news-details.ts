@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { speakText, stopSpeech } from "../actions/speech";
+import { speakText, SpeechOpts, stopSpeech } from "../actions/speech";
 
-export const useNewsDetail = (news: any) => {
+export const useNewsDetail = (news: any, speechOptions?: SpeechOpts) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [readingModeEnabled, setReadingModeEnabled] = useState(false);
   const [highlightedParagraphs, setHighlightedParagraphs] = useState<number[]>(
@@ -24,7 +24,7 @@ export const useNewsDetail = (news: any) => {
       isSpeakingRef.current = true;
       currentTextRef.current = nextText;
 
-      speakText(nextText, handleDone, handleStopped);
+      speakText(nextText, handleDone, handleStopped, speechOptions);
     }
   };
 
@@ -66,6 +66,7 @@ export const useNewsDetail = (news: any) => {
         highlightedParagraphs.length > 0
           ? highlightedParagraphs.map((i) => paragraphs[i]).join(" ")
           : news.content;
+
       triggerSpeech(textsToRead);
       setIsPlaying(true);
     }
