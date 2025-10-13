@@ -1,5 +1,3 @@
-"use client";
-
 import { literasiActions } from "@/features/literasi/actions/literasi";
 import NewsCard from "@/features/literasi/components/news-card";
 import SearchInput from "@/features/literasi/components/search-input";

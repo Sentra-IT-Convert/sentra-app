@@ -4,7 +4,7 @@
     "slug": "sentra",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/sentra-logo.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "sentra",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png"
+        "foregroundImage": "./assets/images/icon1.png",
+        "backgroundColor": "#00027d",
+        "dark": {
+          "image": "./assets/icon1.png",
+          "backgroundColor": "#00027d"
+        },
+        "imageWidth": 200
       },
       "edgeToEdgeEnabled": true,
       "package": "com.jasonsw.sentra",
@@ -23,17 +29,17 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/icon1.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/icon.png",
           "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "resizeMode": "cover",
+          "backgroundColor": "#00027d"
         }
       ],
       "expo-secure-store"

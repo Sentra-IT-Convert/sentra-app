@@ -76,7 +76,7 @@ export function resolveSpokenPage(raw?: string): Href | null {
     { keys: ["beranda", "home"], page: "home" },
 
     {
-      keys: ["deteksi uang", "money detection", "money-detection"],
+      keys: ["deteksi, deteksi uang", "money detection", "money-detection"],
       page: "money-detection",
     },
     { keys: ["deteksi"], page: "deteksi" },

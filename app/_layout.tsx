@@ -20,6 +20,7 @@ import {
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -44,7 +45,6 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
-  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>

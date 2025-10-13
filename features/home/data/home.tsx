@@ -200,6 +200,17 @@ export const expenseCategories = [
       <FontAwesome6 name="umbrella-beach" size={size} color={color} />
     ),
   },
+  {
+    title: "Lainnya",
+    value: "lainnya",
+    icon: ({ color, size = 24 }: IconProps) => (
+      <MaterialCommunityIcons
+        name="dots-horizontal"
+        size={size}
+        color={color}
+      />
+    ),
+  },
 ];
 
 export const incomeCategories = [
@@ -229,6 +240,17 @@ export const incomeCategories = [
     value: "part time",
     icon: ({ color, size = 24 }: IconProps) => (
       <MaterialIcons name="work-outline" size={size} color={color} />
+    ),
+  },
+  {
+    title: "Lainnya",
+    value: "lainnya",
+    icon: ({ color, size = 24 }: IconProps) => (
+      <MaterialCommunityIcons
+        name="dots-horizontal"
+        size={size}
+        color={color}
+      />
     ),
   },
 ];

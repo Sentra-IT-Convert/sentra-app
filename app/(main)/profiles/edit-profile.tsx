@@ -5,12 +5,12 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Image,
-    SafeAreaView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 export const options = {
   tabBarStyle: { display: "none" },
@@ -74,7 +74,7 @@ export default function ProfileEdit() {
 
   return (
     <SafeAreaView className="flex-1 bg-primary-400 w-full h-full">
-      <View className="items-center justify-center mt-16">
+      <View className="items-center justify-center mt-4">
         <TouchableOpacity>
           <Image
             source={{
@@ -147,6 +147,7 @@ export default function ProfileEdit() {
                 {["Tunanetra", "Low Vision"].map((status) => (
                   <TouchableOpacity
                     key={status}
+                    activeOpacity={0.95}
                     className={`flex-1 py-1 rounded-xl border-2 ${
                       selectedStatus === status
                         ? "bg-primary-400 border-primary-400"

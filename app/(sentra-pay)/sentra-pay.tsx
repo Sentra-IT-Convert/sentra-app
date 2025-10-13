@@ -4,6 +4,7 @@ import { TABS } from "@/features/home/data/home";
 import { useTransaction } from "@/features/home/hooks/use-transaction";
 import { DateSelector } from "@/features/sentra-pay/components/date-selector";
 import { useWallet } from "@/features/sentra-pay/hooks/use-wallet";
+import { formatRupiah } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import {
@@ -17,6 +18,7 @@ import {
 } from "lucide-react-native";
 import React, { useState } from "react";
 import {
+  FlatList,
   SafeAreaView,
   ScrollView,
   Text,
@@ -50,7 +52,7 @@ const SentraPay = (props: Props) => {
   const transactions = [
     {
       id: 1,
-      date: "31 Mar 2025",
+      date: "14 Oktober 2025",
       type: "QR Bayar",
       description: "Pembayaran QR ke LWSN_XXX_Soekarno Hatta 250606011122",
       amount: -51000,
@@ -58,7 +60,24 @@ const SentraPay = (props: Props) => {
     },
     {
       id: 2,
-      date: "31 Mar 2025",
+      date: "14 Oktober 2025",
+      type: "Transfer Rupiah",
+      description:
+        "Transfer Dana Dari Sentra Pay KADEK NANDANA TYO 085266994433",
+      amount: 50000,
+      icon: "transfer",
+    },
+    {
+      id: 3,
+      date: "15 Oktober 2025",
+      type: "Transfer Rupiah",
+      description: "Transfer Dana Dari Sentra Pay RICHARD 085266994433",
+      amount: 100000,
+      icon: "transfer",
+    },
+    {
+      id: 4,
+      date: "17 Oktober 2025",
       type: "Transfer Rupiah",
       description: "Transfer Dana Dari Sentra Pay JASON SURYA 085266994433",
       amount: 50000,
@@ -111,7 +130,9 @@ const SentraPay = (props: Props) => {
             </View>
 
             <Text className="text-white text-center text-3xl font-bold mt-1">
-              Rp{showBalance ? `${data?.balance}` : "••••••••"}
+              {showBalance
+                ? formatRupiah(totalIncome - totalExpense)
+                : "••••••••"}
             </Text>
 
             <View className="flex-row items-center justify-center mt-2 mb-4">
@@ -167,55 +188,68 @@ const SentraPay = (props: Props) => {
         </TouchableOpacity>
       </View>
 
-      <View className="px-4">
+      <View className="flex-1 px-4">
         <Text className="text-lg font-bold mb-2">Transaksi</Text>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row justify-between mb-4 gap-x-2">
-            {months.map((month) => (
-              <TouchableOpacity
-                key={month}
-                onPress={() => setActiveMonth(month)}
-                className={`py-2 px-4 rounded-md ${
-                  activeMonth === month ? "bg-primary-400" : "bg-gray-100"
-                }`}
-              >
-                <Text
-                  className={`${
-                    activeMonth === month ? "text-white" : "text-gray-600"
+        <ScrollView
+          contentContainerStyle={{ paddingVertical: 6, alignItems: "center" }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          <View className="flex-row gap-x-2">
+            {months.map((month) => {
+              const active = activeMonth === month;
+              return (
+                <TouchableOpacity
+                  key={month}
+                  activeOpacity={0.9}
+                  onPress={() => setActiveMonth(month)}
+                  className={`px-4 h-10 rounded-md justify-center items-center ${
+                    active ? "bg-primary-400" : "bg-gray-100"
                   }`}
                 >
-                  {month}
-                </Text>
-              </TouchableOpacity>
-            ))}
+                  <Text
+                    className={
+                      active ? "text-white font-semibold" : "text-primary-400"
+                    }
+                  >
+                    {month}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </ScrollView>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {transactions.map((transaction) => (
-            <View key={transaction.id} className="mb-4">
-              <Text className="text-xs text-gray-500 mb-1">
+        <FlatList
+          contentContainerStyle={{ paddingBottom: 60 }}
+          showsVerticalScrollIndicator={false}
+          data={transactions}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item: transaction }) => (
+            <View className="my-2">
+              <Text className="text-sm text-gray-500 mb-1">
                 {transaction.date}
               </Text>
               <View className="flex-row items-center">
-                <View className="w-10 h-10 bg-blue-100 rounded-md items-center justify-center mr-3">
+                <View className="w-12 h-12 bg-blue-100 rounded-md items-center justify-center mr-3">
                   {transaction.icon === "qr" ? (
-                    <View className="w-6 h-6 border-2 border-blue-900 rounded-sm items-center justify-center">
-                      <View className="w-3 h-3 bg-blue-900" />
+                    <View className="w-8 h-8 border-2 border-blue-900 rounded-sm items-center justify-center">
+                      <View className="w-5 h-5 bg-blue-900" />
                     </View>
                   ) : (
                     <ArrowUp stroke="#1e40af" width={20} height={20} />
                   )}
                 </View>
+
                 <View className="flex-1 max-w-[60%]">
-                  <Text className="font-bold">{transaction.type}</Text>
+                  <Text className="font-bold text-lg">{transaction.type}</Text>
                   <Text className="text-xs text-gray-500">
                     {transaction.description}
                   </Text>
                 </View>
+
                 <Text
-                  className={`font-bold ${
+                  className={`font-bold text-lg ${
                     transaction.amount < 0 ? "text-red-500" : "text-green-500"
                   }`}
                 >
@@ -224,8 +258,8 @@ const SentraPay = (props: Props) => {
                 </Text>
               </View>
             </View>
-          ))}
-        </ScrollView>
+          )}
+        />
       </View>
     </SafeAreaView>
   );

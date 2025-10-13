@@ -28,11 +28,21 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
   const [isRecording, setIsRecording] = useState(false);
   const [busy, setBusy] = useState(false);
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [awaitingVoiceConfirm, setAwaitingVoiceConfirm] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const isTransactionQuery = (q: any) =>
     Array.isArray(q.queryKey) && q.queryKey[0] === "transactions";
+
+  function pickPendingTx(r: VoiceChatResponse) {
+    const list = r.session_state?.context?.pending_delete_transactions as
+      | any[]
+      | undefined;
+    const idx = r.session_state?.context?.current_delete_index ?? 0;
+    if (!Array.isArray(list) || !list[idx]) return null;
+    return list[idx];
+  }
 
   async function refreshTransactions() {
     await queryClient.invalidateQueries({ predicate: isTransactionQuery });
@@ -139,18 +149,13 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
     console.log("🎧 Voice response:", r);
 
     if (r?.text) {
-      Speech.speak(r.text, {
-        language: "id-ID",
-        pitch: 1,
-        rate: 1.0,
-      });
+      Speech.speak(r.text, { language: "id-ID", pitch: 1, rate: 1.0 });
     }
 
     if (r.action === "navigate") {
       const fromServer = r.target as Href | undefined;
       const fromTranscript = resolveSpokenPage(r.transcript);
       let target = normalizeTarget(fromServer ?? fromTranscript);
-
       if (target) {
         try {
           router.push(target);
@@ -161,7 +166,6 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
       } else {
         Alert.alert("Tujuan tidak dikenali", r.text || "Coba ucapkan lagi.");
       }
-
       playTTS(r.audio_url);
       return;
     }
@@ -173,6 +177,27 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    if (r.action === "delete_transaction") {
+      playTTS(r.audio_url);
+
+      const candidate = pickPendingTx(r);
+      const label = candidate
+        ? `${candidate.title ?? "Transaksi"} • Rp${Number(candidate.amount || 0).toLocaleString("id-ID")}`
+        : undefined;
+
+      setAwaitingVoiceConfirm(true);
+
+      Alert.alert(
+        "Konfirmasi Hapus",
+        r.text ||
+          label ||
+          'Tekan tombol mic, lalu ucapkan "YA" untuk hapus atau "TIDAK" untuk lewati.',
+        [{ text: "OK" }]
+      );
+      await refreshTransactions();
+      return;
+    }
+    // fallback generic
     playTTS(r.audio_url);
     if (r.text) Alert.alert("Info", r.text);
   }

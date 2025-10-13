@@ -32,7 +32,7 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="edit-profile"
         options={{
-          headerShown: false,
+          headerShown: true,
           title: "Edit Profile",
           presentation: "card",
           animation:

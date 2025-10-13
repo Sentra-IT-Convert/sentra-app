@@ -121,7 +121,7 @@ const Notification = (props: Props) => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white" edges={["top", "bottom"]}>
+    <SafeAreaView className="flex-1 bg-white" edges={["bottom"]}>
       <StatusBar style="light" backgroundColor="#0b0f6b" translucent={false} />
       <ScrollView
         className="flex-1"

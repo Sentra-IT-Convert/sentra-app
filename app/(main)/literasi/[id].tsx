@@ -1,10 +1,9 @@
 import { newsList } from "@/features/literasi/data/data";
 import { useNewsDetail } from "@/features/literasi/hooks/use-news-details";
-import SentraFAB from "@/features/sentra-ai/components/sentra-fab";
+import { useSentraSpeech } from "@/features/sentra-ai/hooks/use-sentra-voice";
 import { Ionicons } from "@expo/vector-icons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import * as Speech from "expo-speech";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
   SafeAreaView,
@@ -23,7 +22,6 @@ const NewsDetail = () => {
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const news = newsList[0];
-
   const SPEECH_OPTS = useMemo(
     () =>
       ({
@@ -35,6 +33,8 @@ const NewsDetail = () => {
     []
   );
 
+  const { speak, stop } = useSentraSpeech();
+
   const {
     isPlaying,
     readingModeEnabled,
@@ -42,14 +42,6 @@ const NewsDetail = () => {
     toggleAudio,
     paragraphs,
   } = useNewsDetail(news, SPEECH_OPTS);
-
-  const speakParagraph = useCallback(
-    (text: string) => {
-      Speech.stop();
-      Speech.speak(text, SPEECH_OPTS);
-    },
-    [SPEECH_OPTS]
-  );
 
   return (
     <SafeAreaView className="flex-1 bg-[#00027d]" edges={["top", "bottom"]}>
@@ -84,7 +76,7 @@ const NewsDetail = () => {
           contentContainerStyle={{
             paddingTop: 16,
             paddingHorizontal: 16,
-            paddingBottom: Math.max(extraBottom, 24), // <-- hindari ketiban TabBar + FAB
+            paddingBottom: Math.max(extraBottom, 24),
           }}
           showsVerticalScrollIndicator={false}
         >
@@ -142,7 +134,15 @@ const NewsDetail = () => {
                   <TouchableOpacity
                     key={index}
                     activeOpacity={0.9}
-                    onPress={() => setActiveIndex(isActive ? null : index)}
+                    onPress={async () => {
+                      if (isActive) {
+                        setActiveIndex(null);
+                        await stop();
+                      } else {
+                        setActiveIndex(index);
+                        await speak(paragraph.trim(), { interrupt: true });
+                      }
+                    }}
                     className="mb-3"
                   >
                     <View
@@ -192,7 +192,6 @@ const NewsDetail = () => {
                           <TouchableOpacity
                             className="flex-row items-center mt-3"
                             activeOpacity={0.8}
-                            onPress={() => speakParagraph(paragraph.trim())}
                           >
                             <Ionicons
                               name="volume-high"
@@ -216,8 +215,6 @@ const NewsDetail = () => {
           </View>
         </ScrollView>
       </View>
-
-      <SentraFAB onPress={toggleAudio} bottomOffset={100} rightOffset={24} />
     </SafeAreaView>
   );
 };
