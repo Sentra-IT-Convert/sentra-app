@@ -1,7 +1,7 @@
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {};
@@ -23,12 +23,8 @@ const Deteksi = (props: Props) => {
       <View className="bg-white flex-1 rounded-t-3xl mt-2 p-4">
         <View className="flex-row justify-center items-center mb-2">
           <View className="flex-row justify-center items-end">
-            <Image
-              source={require("../../../assets/images/sentra-blue.png")}
-              className="w-12 h-12"
-            />
             <Text className="font-bold text-3xl text-primary-400 -ml-2">
-              entra
+              Sentra
             </Text>
           </View>
         </View>

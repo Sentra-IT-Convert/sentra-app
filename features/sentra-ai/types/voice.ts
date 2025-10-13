@@ -1,11 +1,17 @@
 export type VoiceChatResponse = {
   text: string;
   transcript?: string;
-  action?: "transaction" | "navigate" | "fill_note" | "unknown";
+  action?:
+    | "transaction"
+    | "navigate"
+    | "delete_transaction"
+    | "query"
+    | "logout";
   success: boolean;
   confidence?: number;
   audio_url?: string;
   metadata?: {
+    transaction_id?: string;
     transaction_type?: "income" | "expense";
     transaction_amount?: number;
     transaction_category?: string;
@@ -13,8 +19,8 @@ export type VoiceChatResponse = {
     page?: string;
   };
   target?: string;
+  session_state?: VoiceSessionState;
 };
-
 export type AddTxPayload = {
   type: "pemasukan" | "pengeluaran";
   amount: number;
@@ -31,5 +37,23 @@ export type VoiceCommandResponse = {
   audio_url?: string;
   metadata?: {
     page?: string;
+  };
+};
+
+export type PendingTx = {
+  id: string;
+  amount: number;
+  title?: string;
+  note?: string;
+  datetime?: string;
+};
+
+export type VoiceSessionState = {
+  pending_confirmation?: boolean;
+  context?: {
+    step?: string;
+    pending_delete_transactions?: PendingTx[];
+    current_delete_index?: number;
+    conversation_history?: unknown[];
   };
 };

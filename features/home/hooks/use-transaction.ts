@@ -11,14 +11,12 @@ import {
 } from "../services/transaction";
 import { Transaction } from "../types/home";
 
-// ✅ fungsi helper biar reusable
 const isTransactionQuery = (q: any) =>
   Array.isArray(q.queryKey) && q.queryKey[0] === "transactions";
 
 export const useTransaction = () => {
   const queryClient = useQueryClient();
 
-  // 🔁 query-query
   const queryAll = useQuery<any>({
     queryKey: ["transactions"],
     queryFn: getTransactions,
@@ -53,16 +51,14 @@ export const useTransaction = () => {
       enabled: !!type && !!category,
     });
 
-  // 🔧 helper untuk invalidate + refetch semua variasi transaksi
   async function refreshTransactions() {
     await queryClient.invalidateQueries({ predicate: isTransactionQuery });
     await queryClient.refetchQueries({
       predicate: isTransactionQuery,
-      type: "all", // refetch semua, termasuk yang non-active
+      type: "all",
     });
   }
 
-  // 💰 CREATE
   const mutationCreate = useMutation<any, Error, FormData>({
     mutationFn: (data) => createTransaction(data),
     onSuccess: async () => {
@@ -70,7 +66,6 @@ export const useTransaction = () => {
     },
   });
 
-  // ✏️ UPDATE
   const mutationUpdate = useMutation({
     mutationFn: updateTransaction,
     onSuccess: async () => {
@@ -78,7 +73,6 @@ export const useTransaction = () => {
     },
   });
 
-  // ❌ DELETE
   const mutationDelete = useMutation({
     mutationFn: deleteTransaction,
     onMutate: async (id: string) => {

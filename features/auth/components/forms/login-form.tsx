@@ -7,7 +7,6 @@ import { Controller, useForm } from "react-hook-form";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { setBiometricCredentials } from "../../actions/biometric";
 import { useLogin } from "../../hooks/use-auth";
-import Biometric from "../biometric";
 import CountrySelect from "../country-select";
 
 export default function LoginForm() {
@@ -124,9 +123,9 @@ export default function LoginForm() {
         </View>
       </TouchableOpacity>
 
-      <Biometric />
+      {/* <Biometric /> */}
 
-      <View className="flex flex-row justify-center">
+      <View className="flex flex-row justify-center mt-4">
         <Text className="text-[#6A6A6A]">Belum memiliki akun? </Text>
         <TouchableOpacity onPress={() => router.push("/register")}>
           <Text className="text-[#3629B7] font-semibold">Sign up</Text>

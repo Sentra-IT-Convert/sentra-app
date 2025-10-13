@@ -1,6 +1,7 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Stack, usePathname, useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function QRLayout() {
   const router = useRouter();
@@ -8,6 +9,8 @@ export default function QRLayout() {
 
   const isOnScanQR = pathname === "/qrCode/scan-qr";
   const isOnShowQR = pathname === "/qrCode/show-qr";
+
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={{ flex: 1 }}>
@@ -18,8 +21,8 @@ export default function QRLayout() {
           animation: isOnShowQR
             ? "slide_from_right"
             : isOnScanQR
-            ? "slide_from_left"
-            : "default",
+              ? "slide_from_left"
+              : "default",
           headerTitle: () => (
             <View style={{ alignItems: "center" }}>
               <Image
@@ -60,11 +63,12 @@ export default function QRLayout() {
         <View
           style={{
             flexDirection: "row",
-            height: 60,
+            height: 100,
             backgroundColor: "white",
             borderTopWidth: 1,
             borderTopColor: "#e5e5e5",
             alignItems: "center",
+            bottom: Math.max(insets.bottom, 8) + 12,
           }}
         >
           <TouchableOpacity
@@ -74,6 +78,7 @@ export default function QRLayout() {
               alignItems: "center",
               paddingTop: 4,
             }}
+            activeOpacity={0.9}
             onPress={() => {
               if (!isOnScanQR) {
                 router.replace("/qrCode/scan-qr");
@@ -83,7 +88,7 @@ export default function QRLayout() {
             <View
               style={{
                 height: 3,
-                width: 60,
+                width: 80,
                 backgroundColor: isOnScanQR ? "#00027d" : "transparent",
                 borderRadius: 2,
                 marginBottom: 4,

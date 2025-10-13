@@ -6,12 +6,12 @@ import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Image,
-    SafeAreaView,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function Profile() {
@@ -85,11 +85,11 @@ export default function Profile() {
               icon={<Ionicons name="settings-sharp" size={24} color="white" />}
               title="Setting"
             />
-            <ProfileItem
+            {/* <ProfileItem
               onPress={enableBiometric}
               icon={<Ionicons name="finger-print" size={24} color="white" />}
               title="Autentikasi Sidik Jari"
-            />
+            /> */}
             <ProfileItem
               icon={<Feather name="log-out" size={24} color="white" />}
               title="Logout"

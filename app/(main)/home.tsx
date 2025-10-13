@@ -195,7 +195,7 @@ const SPEECH_OPTS = {
   language: "id-ID",
   rate: Platform.select({
     ios: 0.45,
-    android: 0.9,
+    android: 1.5,
     default: 0.7,
   }),
   pitch: 0.95,
