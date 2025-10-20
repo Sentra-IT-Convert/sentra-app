@@ -26,7 +26,7 @@ const NewsDetail = () => {
     () =>
       ({
         language: "id-ID",
-        rate: 0.9,
+        rate: 3,
         pitch: 0.95,
         volume: 1.0,
       }) as const,
@@ -80,11 +80,14 @@ const NewsDetail = () => {
           }}
           showsVerticalScrollIndicator={false}
         >
-          <View className="bg-white rounded-xl p-3 mb-4 border border-gray-300">
+          <TouchableOpacity
+            onPress={toggleAudio}
+            className="bg-white rounded-xl p-3 mb-4 border border-gray-300"
+          >
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
                 <TouchableOpacity
-                  onPress={toggleAudio}
+                  // onPress={toggleAudio}
                   className="w-12 h-12 rounded-full bg-primary-400 border border-gray-200 items-center justify-center mr-3"
                   activeOpacity={0.8}
                 >
@@ -107,7 +110,7 @@ const NewsDetail = () => {
                 <Ionicons name="volume-high" size={24} color="#000000" />
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
 
           <View className="bg-white border p-4 rounded-xl border-gray-200">
             <Text className="text-black text-base font-bold mb-3">

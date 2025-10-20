@@ -162,9 +162,11 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
         } catch (e) {
           console.error("❌ Navigasi gagal:", e);
           Alert.alert("Navigasi gagal", r.text || "Perintah suara diproses");
+          // playTTS(r.text);
         }
       } else {
         Alert.alert("Tujuan tidak dikenali", r.text || "Coba ucapkan lagi.");
+        // playTTS(r.text);
       }
       playTTS(r.audio_url);
       return;
@@ -172,7 +174,7 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
 
     if (r.action === "transaction") {
       playTTS(r.audio_url);
-      Alert.alert("✅ Transaksi Disimpan", r.text);
+      // Alert.alert("✅ Transaksi Disimpan", r.text);
       await refreshTransactions();
       return;
     }

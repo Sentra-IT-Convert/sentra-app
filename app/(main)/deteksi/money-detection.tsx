@@ -1,61 +1,75 @@
-import CameraPermission from "@/components/permission";
 import CameraActions from "@/features/money-detection/components/camera-actions";
 import SettingsModal from "@/features/money-detection/components/settings-modal";
 import { useDeteksi } from "@/features/money-detection/hooks/use-money-detection";
-import { DeteksiResponse } from "@/features/money-detection/types/money-detection";
 import {
   speakDetectionResults,
   speakMessage,
 } from "@/features/money-detection/utils/speech";
-import { CameraType, CameraView } from "expo-camera";
-import { useRef, useState } from "react";
+import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const MoneyDetection = () => {
+  const [permission, requestPermission] = useCameraPermissions();
+  const [cameraReady, setCameraReady] = useState(false);
+  const [mountError, setMountError] = useState<string | null>(null);
+
   const [detectedAmount, setDetectedAmount] = useState<number | null>(null);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [beepEnabled, setBeepEnabled] = useState<boolean>(true);
-  const [flashEnabled, setFlashEnabled] = useState<boolean>(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [beepEnabled, setBeepEnabled] = useState(true);
+  const [flashEnabled, setFlashEnabled] = useState(true);
   const [facing, setFacing] = useState<CameraType>("back");
+
   const insets = useSafeAreaInsets();
   const cameraRef = useRef<CameraView>(null);
 
-  const handleDetectionResults = (res: DeteksiResponse) => {
+  const hideAmountTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const startHideAmountTimer = () => {
+    if (hideAmountTimer.current) clearTimeout(hideAmountTimer.current);
+    hideAmountTimer.current = setTimeout(() => {
+      setDetectedAmount(null);
+    }, 10000);
+  };
+
+  const { mutate: DeteksiPhoto, isPending } = useDeteksi((res) => {
     if (res?.data?.total) {
       const total = res.data.total;
       const details = res.data.details;
       setDetectedAmount(total);
+      startHideAmountTimer();
       speakDetectionResults(total, details);
     } else {
       setDetectedAmount(null);
-      if (beepEnabled) {
+      if (beepEnabled)
         speakMessage("Uang tidak terdeteksi. Silakan coba lagi.");
-      }
     }
-  };
+  });
 
-  const { mutate: DeteksiPhoto, isPending } = useDeteksi(
-    handleDetectionResults
-  );
-
-  CameraPermission();
+  useEffect(() => {
+    if (!permission) return;
+    if (!permission.granted && !permission.canAskAgain) {
+      return;
+    }
+    if (!permission.granted) {
+      requestPermission();
+    }
+  }, [permission]);
 
   const takePicture = async () => {
+    if (!cameraReady || !cameraRef.current) {
+      console.warn("Camera not ready yet");
+      return;
+    }
     try {
-      const photo = await cameraRef.current?.takePictureAsync({
+      const photo = await cameraRef.current.takePictureAsync({
         quality: 1,
         base64: false,
         exif: false,
         skipProcessing: true,
       });
-
-      if (!photo) {
-        console.error("Failed to take picture");
-        return;
-      }
-
-      console.log("Photo taken:", photo.uri);
+      if (!photo) return;
 
       const formData = new FormData();
       formData.append("image", {
@@ -65,28 +79,73 @@ const MoneyDetection = () => {
       } as any);
 
       await DeteksiPhoto({ photo: formData });
-    } catch (error) {
-      console.error("Error taking picture:", error);
+    } catch (err) {
+      console.error("Error taking picture:", err);
     }
   };
 
-  const toggleCameraType = () =>
-    setFacing(facing === "back" ? "front" : "back");
+  const toggleCameraType = () => {
+    setCameraReady(false);
+    setFacing((prev) => (prev === "back" ? "front" : "back"));
+  };
+
+  if (!permission) {
+    return <View style={{ flex: 1, backgroundColor: "black" }} />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View className="flex-1 items-center justify-center bg-black">
+        <Text className="text-white mb-4">
+          Aplikasi memerlukan akses kamera.
+        </Text>
+        <Text
+          onPress={() => requestPermission()}
+          className="text-blue-400 underline"
+        >
+          Berikan izin kamera
+        </Text>
+      </View>
+    );
+  }
+
+  const flashMode = facing === "front" ? "off" : flashEnabled ? "on" : "off";
 
   return (
     <View className="flex-1 bg-black">
       <View className="flex-[4]">
         <CameraView
+          key={facing}
           ref={cameraRef}
           style={{ flex: 1 }}
           facing={facing}
-          flash={flashEnabled ? "on" : "off"}
+          flash={flashMode as any}
+          onCameraReady={() => {
+            setMountError(null);
+            setCameraReady(true);
+          }}
+          onMountError={(e) => {
+            console.error("Camera mount error:", e);
+            setCameraReady(false);
+          }}
+          autofocus="on"
+          zoom={0}
         >
-          <View className="absolute top-1/2 left-0 right-0 z-50 items-center -translate-y-1/2">
-            {detectedAmount && (
+          <View className="absolute top-1/3 left-0 right-0 z-50 items-center -translate-y-1/2">
+            {detectedAmount != null && (
               <Text className="text-white text-6xl font-bold">
-                {detectedAmount}
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  maximumFractionDigits: 0,
+                }).format(detectedAmount)}
               </Text>
+            )}
+            {!cameraReady && (
+              <Text className="text-white mt-2">Menyiapkan kamera…</Text>
+            )}
+            {mountError && (
+              <Text className="text-red-400 mt-2">{mountError}</Text>
             )}
           </View>
         </CameraView>
@@ -97,7 +156,7 @@ const MoneyDetection = () => {
         className="absolute left-0 right-0 bottom-0 bg-white pt-6 px-4 h-[200px]"
       >
         <CameraActions
-          isPending={isPending}
+          isPending={isPending || !cameraReady}
           onOpenSettings={() => setModalVisible(true)}
           onTakePicture={takePicture}
         />

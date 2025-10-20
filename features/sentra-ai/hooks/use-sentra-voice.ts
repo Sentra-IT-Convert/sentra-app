@@ -10,7 +10,7 @@ export function useSentraSpeech() {
   const SPEECH_OPTS = useMemo(
     () => ({
       language: "id-ID",
-      rate: 1.5,
+      rate: 3,
       pitch: 1,
       volume: 1.0,
     }),
