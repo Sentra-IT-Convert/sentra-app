@@ -98,6 +98,7 @@ export default function TabLayout() {
         name="qr"
         options={{
           title: "QRCode",
+          tabBarLabel: "QRCode",
           tabBarButton: () => {
             const router = useRouter();
             return (

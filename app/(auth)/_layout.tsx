@@ -94,6 +94,16 @@ export default function AuthLayout() {
             Platform.OS === "ios" ? "slide_from_right" : "slide_from_right",
         }}
       />
+      <Stack.Screen
+        name="login-email"
+        options={{
+          headerShown: true,
+          title: "Log in",
+          presentation: "card",
+          animation:
+            Platform.OS === "ios" ? "slide_from_right" : "slide_from_right",
+        }}
+      />
     </Stack>
   );
 }

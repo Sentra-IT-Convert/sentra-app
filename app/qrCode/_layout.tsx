@@ -63,12 +63,11 @@ export default function QRLayout() {
         <View
           style={{
             flexDirection: "row",
-            height: 100,
+            height: 150,
             backgroundColor: "white",
             borderTopWidth: 1,
             borderTopColor: "#e5e5e5",
             alignItems: "center",
-            bottom: Math.max(insets.bottom, 8) + 12,
           }}
         >
           <TouchableOpacity
